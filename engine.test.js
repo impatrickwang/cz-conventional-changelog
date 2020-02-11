@@ -4,7 +4,7 @@ var engine = require('./engine');
 var mock = require('mock-require');
 var semver = require('semver');
 
-var types = require('conventional-commit-types').types;
+var types = require('./types').types;
 
 var expect = chai.expect;
 chai.should();
@@ -465,6 +465,7 @@ function commitMessage(answers, options) {
   var result = null;
   engine(options).prompter(
     {
+      registerPrompt: function(name, prompt) {},
       prompt: function(questions) {
         return {
           then: function(finalizer) {
@@ -505,6 +506,7 @@ function getQuestions(options) {
   options = options || defaultOptions;
   var result = null;
   engine(options).prompter({
+    registerPrompt: function(name, prompt) {},
     prompt: function(questions) {
       result = questions;
       return {

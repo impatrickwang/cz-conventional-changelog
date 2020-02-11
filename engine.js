@@ -5,6 +5,7 @@ var map = require('lodash.map');
 var longest = require('longest');
 var rightPad = require('right-pad');
 var chalk = require('chalk');
+var fuse = require('fuse.js');
 
 var filter = function(array) {
   return array.filter(function(x) {
@@ -40,12 +41,29 @@ var filterSubject = function(subject) {
 module.exports = function(options) {
   var types = options.types;
 
-  var length = longest(Object.keys(types)).length + 1;
+  var length =
+    longest(Object.keys(types).map(key => types[key].title + '(' + key + ')'))
+      .length + 1;
   var choices = map(types, function(type, key) {
     return {
-      name: rightPad(key + ':', length) + ' ' + type.description,
-      value: key
+      name:
+        rightPad(type.title + '(' + key + ')' + ':', length) +
+        ' ' +
+        type.emoji +
+        ' ' +
+        type.description,
+      value: type.emoji + key
     };
+  });
+
+  const fuzzy = new fuse(choices, {
+    shouldSort: true,
+    threshold: 0.4,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys: ['name']
   });
 
   return {
@@ -61,6 +79,14 @@ module.exports = function(options) {
     // By default, we'll de-indent your commit
     // template and will keep empty lines.
     prompter: function(cz, commit) {
+      cz.registerPrompt(
+        'autocomplete',
+        require('inquirer-autocomplete-prompt')
+      );
+      cz.registerPrompt(
+        'maxlength-input',
+        require('inquirer-maxlength-input-prompt')
+      );
       // Let's ask some questions of the user
       // so that we can populate our commit
       // template.
@@ -70,11 +96,13 @@ module.exports = function(options) {
       // collection library if you prefer.
       cz.prompt([
         {
-          type: 'list',
+          type: 'autocomplete',
           name: 'type',
           message: "Select the type of change that you're committing:",
-          choices: choices,
-          default: options.defaultType
+          default: options.defaultType,
+          source: (answers, query) => {
+            return Promise.resolve(query ? fuzzy.search(query) : choices);
+          }
         },
         {
           type: 'input',

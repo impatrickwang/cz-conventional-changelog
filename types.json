@@ -1,0 +1,59 @@
+{
+  "types": {
+    "feat": {
+      "emoji": "✨",
+      "description": "A new feature",
+      "title": "Features"
+    },
+    "fix": {
+      "emoji": "🐛",
+      "description": "A bug fix",
+      "title": "Bug Fixes"
+    },
+    "docs": {
+      "emoji": "📝",
+      "description": "Documentation only changes",
+      "title": "Documentation"
+    },
+    "style": {
+      "emoji": "🎨",
+      "description": "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)",
+      "title": "Styles"
+    },
+    "refactor": {
+      "emoji": "♻️ ",
+      "description": "A code change that neither fixes a bug nor adds a feature",
+      "title": "Code Refactoring"
+    },
+    "perf": {
+      "emoji": "⚡️",
+      "description": "A code change that improves performance",
+      "title": "Performance Improvements"
+    },
+    "test": {
+      "emoji": "✅",
+      "description": "Adding missing tests or correcting existing tests",
+      "title": "Tests"
+    },
+    "build": {
+      "emoji": "🏗 ",
+      "description": "Changes that affect the build system or external dependencies",
+      "title": "Builds"
+    },
+    "ci": {
+      "emoji": "👷",
+      "description": "Changes to our CI configuration files and scripts",
+      "title": "Continuous Integrations"
+    },
+    "chore": {
+      "emoji": "🔖",
+      "description": "Other changes that don't modify src or test files",
+      "title": "Chores"
+    },
+    "revert": {
+      "emoji": "⏪",
+      "description": "Reverts a previous commit",
+      "title": "Reverts"
+    }
+  }
+}
